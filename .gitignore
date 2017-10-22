@@ -1,2 +1,8 @@
 .idea/*
 leadsdatabase.iml
+feedprocessor/feedprocessor.iml
+services/services.iml
+transactionsdatabase/transactionsdatabase.iml
+feedprocessor/target/*
+services/target/*
+transactionsdatabase/target/*
