@@ -1,5 +1,6 @@
 package datafeeds;
 
+import model.Transaction;
 
 import org.junit.Assert;
 import org.junit.Test;

@@ -3,6 +3,8 @@ leadsdatabase.iml
 feedprocessor/feedprocessor.iml
 services/services.iml
 transactionsdatabase/transactionsdatabase.iml
+model/model.iml
 feedprocessor/target/*
 services/target/*
 transactionsdatabase/target/*
+model/target/*

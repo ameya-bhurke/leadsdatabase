@@ -1,5 +1,7 @@
 package datafeeds;
 
+import model.Transaction;
+
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -23,6 +25,10 @@ public class CsvTranscationFactory implements TransactionFactory {
         this.transactionFile = transactionFile;
     }
 
+    public static final CsvTranscationFactory newCsvTransactionFactory() {
+        return new CsvTranscationFactory("classpath:data.txt");
+    }
+
     public List<Transaction> load() {
         try {
             CsvSchema bootstrapSchema = CsvSchema.builder()
@@ -36,9 +42,9 @@ public class CsvTranscationFactory implements TransactionFactory {
             CsvMapper mapper = new CsvMapper();
             DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:MM:ss a");
             mapper.setDateFormat(dateFormat);
-            File file = new ClassPathResource(transactionFile).getFile();
             MappingIterator<Transaction> mappingIterator =
-                    mapper.reader(Transaction.class).with(bootstrapSchema).readValues(file);
+                    mapper.reader(Transaction.class).with(bootstrapSchema).readValues(
+                            new ClassPathResource(transactionFile).getInputStream());
             return mappingIterator.readAll();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Error loading transactions from file", e);
