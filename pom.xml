@@ -12,7 +12,6 @@
     <modules>
         <module>model</module>
         <module>feedprocessor</module>
-        <module>transactionsdatabase</module>
         <module>services</module>
     </modules>
 

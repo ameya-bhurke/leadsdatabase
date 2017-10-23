@@ -1,12 +1,10 @@
 package model;
 
-import javax.persistence.Entity;
 import java.util.Date;
 
 /**
  * A bean class for Transactions. Each instance hold properties for a single transaction.
  */
-@Entity
 public final class Transaction {
 
     private String CustomerId;
@@ -15,6 +13,7 @@ public final class Transaction {
     private String Description;
 
     public Transaction() {
+
     }
 
     public String getCustomerId() {
