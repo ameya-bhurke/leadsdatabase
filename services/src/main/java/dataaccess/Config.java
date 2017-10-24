@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan(basePackages = {"model", "dataaccess"})
-public class SpringJdbcConfig {
+public class Config {
 
     @Bean
     public DataSource h2DataSource() {
@@ -21,4 +21,6 @@ public class SpringJdbcConfig {
 
         return dataSource;
     }
+
+
 }

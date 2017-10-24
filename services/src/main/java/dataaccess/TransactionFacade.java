@@ -1,5 +1,9 @@
 package dataaccess;
 
+import accumulator.TransactionAccumulator;
+import accumulator.TransactionAccumulatorPipelineFactory;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import model.ClassificationEnum;
 import model.Transaction;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +20,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -54,7 +60,7 @@ public class TransactionFacade {
         LOGGER.info("Creating transactions table");
         jdbcTemplate.execute("DROP TABLE transactions IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE transactions(" +
-                "customer_id VARCHAR2(255), date DATETIME, amount DOUBLE, description VARCHAR2(255) );" );
+                "customer_id VARCHAR2(255), date TIMESTAMP, amount DOUBLE, description VARCHAR2(255) );" );
         LOGGER.info("Created transactions table successfully");
     }
 
@@ -75,10 +81,36 @@ public class TransactionFacade {
 
         TransactionResultSetExtractor transactionResultSetExtractor = new TransactionResultSetExtractor();
         List<Transaction> transactionQueryResponseList =
-                jdbcTemplate.query("SELECT * FROM transactions WHERE customer_id=? AND date >= ? AND date <= ?",
+                jdbcTemplate.query("SELECT * FROM transactions WHERE customer_id=? AND date >= ? AND date <= ? ORDER BY date ASC",
                 new Object[] {customerId,start.toDate(),end.toDate()}, transactionResultSetExtractor);
         LOGGER.info(MessageFormat.format("Found {0} transactions.", transactionQueryResponseList.size()));
         return transactionQueryResponseList;
+    }
+
+    public double balance(final String customerId) {
+        LOGGER.info(MessageFormat.format("Find balance for customer: {0}", customerId));
+        BalanceResultSetExctractor balanceResultSetExctractor = new BalanceResultSetExctractor();
+        final double balance = jdbcTemplate.query("SELECT SUM(amount) FROM transactions WHERE customer_id=?", new Object[] {customerId},
+                balanceResultSetExctractor);
+        LOGGER.info(MessageFormat.format("Balance for customer: {0} is {1}", customerId, balance));
+        return balance;
+    }
+
+    public List<ClassificationEnum> classifyCustomerTransactions(List<Transaction> transactionList) {
+        final TransactionAccumulator transactionAccumulator =
+                TransactionAccumulatorPipelineFactory.buildTransactionAccumulatorPipeline();
+        final List<ClassificationEnum> classifications = new ArrayList<ClassificationEnum>();
+        Map<ClassificationEnum, Boolean> classificationMap = new HashMap<ClassificationEnum, Boolean>();
+        for (final Transaction transaction : transactionList) {
+            transactionAccumulator.forEach(transaction);
+        }
+        transactionAccumulator.accumulate(classificationMap);
+        for (Map.Entry<ClassificationEnum, Boolean> classificationEntry: classificationMap.entrySet()){
+            if(classificationEntry.getValue()) {
+                classifications.add(classificationEntry.getKey());
+            }
+        }
+        return classifications;
     }
 
     public long transactionCount() {
@@ -97,12 +129,19 @@ public class TransactionFacade {
             while(resultSet.next()) {
                 Transaction transaction = new Transaction();
                 transaction.setCustomerId(resultSet.getString(1));
-                transaction.setDate(resultSet.getDate(2));
+                transaction.setDate(resultSet.getTimestamp(2));
                 transaction.setAmount(resultSet.getDouble(3));
                 transaction.setDescription(resultSet.getString(4));
                 transactionList.add(transaction);
             }
             return transactionList;
+        }
+    }
+
+    private class BalanceResultSetExctractor implements ResultSetExtractor<Double> {
+        public Double extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+            resultSet.next();
+            return resultSet.getDouble(1);
         }
     }
 }

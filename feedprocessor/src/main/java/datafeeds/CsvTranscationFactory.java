@@ -40,7 +40,7 @@ public class CsvTranscationFactory implements TransactionFactory {
                     .setSkipFirstDataRow(true)
                     .build();
             CsvMapper mapper = new CsvMapper();
-            DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:MM:ss a");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
             mapper.setDateFormat(dateFormat);
             MappingIterator<Transaction> mappingIterator =
                     mapper.reader(Transaction.class).with(bootstrapSchema).readValues(

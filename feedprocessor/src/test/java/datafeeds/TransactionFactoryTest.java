@@ -36,7 +36,7 @@ public class TransactionFactoryTest {
             Assert.assertTrue("CustomerId is not as expected", transaction.getCustomerId().equals("3"));
             Assert.assertTrue("Amount is not as expected", transaction.getAmount() == -13.94);
             Assert.assertTrue("Description is not as expected", transaction.getDescription().equals("SIT MAURIS IPSUM SIT"));
-            DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:MM:ss a");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
             Date expectedDate = dateFormat.parse("9/05/2016 1:26:54 PM");
             Assert.assertTrue("Date is not as expected", transaction.getDate().equals(expectedDate));
         } catch (Exception e) {

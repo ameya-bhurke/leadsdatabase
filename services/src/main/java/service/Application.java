@@ -1,19 +1,26 @@
 package service;
 
-import dataaccess.SpringJdbcConfig;
+import dataaccess.Config;
 import dataaccess.TransactionFacade;
 import datafeeds.CsvTranscationFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import util.CustomDateSerializer;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.logging.Logger;
 
 @SpringBootApplication(scanBasePackages = {"model", "dataaccess","service"})
-@Import({SpringJdbcConfig.class})
+@SpringBootConfiguration
+@Import({Config.class})
 public class Application implements CommandLineRunner {
 
     private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
@@ -31,5 +38,16 @@ public class Application implements CommandLineRunner {
         transactionFacade.loadIntoDatabase(CsvTranscationFactory.newCsvTransactionFactory().load());
         LOGGER.info(MessageFormat.format("Loaded {0} transactions into transactions database.",
                 transactionFacade.transactionCount()));
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer addCustomBigDecimalDeserialization() {
+        return new Jackson2ObjectMapperBuilderCustomizer() {
+
+            public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
+                jacksonObjectMapperBuilder.serializerByType(Date.class, new CustomDateSerializer());
+            }
+
+        };
     }
 }

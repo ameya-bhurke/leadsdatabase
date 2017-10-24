@@ -1,23 +1,33 @@
 package service;
 
+import model.ClassificationEnum;
 import model.Transaction;
 
 import java.util.List;
 
 public class TransactionResponse {
 
-    private String classification;
+    private double balance;
+    private List<ClassificationEnum> classifications;
     private List<Transaction> transactionList;
 
     public TransactionResponse() {
     }
 
-    public String getClassification() {
-        return classification;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setClassification(String classification) {
-        this.classification = classification;
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public List<ClassificationEnum> getClassifications() {
+        return classifications;
+    }
+
+    public void setClassifications(List<ClassificationEnum> classifications) {
+        this.classifications = classifications;
     }
 
     public List<Transaction> getTransactionList() {
