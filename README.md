@@ -15,3 +15,8 @@ Assuming you're still in the root directory of the project, please run the follo
 ```
 java -jar services\target\services-1.0-SNAPSHOT.jar
 ```
+
+## Accessing the application
+Goto the following URL after successfully running the application - 
+
+http://localhost:8080/index.html
