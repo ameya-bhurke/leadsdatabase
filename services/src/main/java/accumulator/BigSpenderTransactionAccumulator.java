@@ -28,6 +28,8 @@ public class BigSpenderTransactionAccumulator extends TransactionAccumulatorProx
     public void accumulate(Map<ClassificationEnum, Boolean> classificationMap) {
         if(((expense * 100) / deposit) > 80) {
             classificationMap.put(ClassificationEnum.BIG_SPENDER, true);
+        } else {
+            classificationMap.put(ClassificationEnum.BIG_SPENDER, false);
         }
         super.accumulate(classificationMap);
     }

@@ -15,7 +15,7 @@ public class BigTicketSpenderTransactionAccumulator extends TransactionAccumulat
 
     @Override
     public void forEach(Transaction transaction) {
-        if(!bigTicketSpender && Math.abs(transaction.getAmount()) > 1000) {
+        if(!bigTicketSpender && transaction.getAmount() < -1000) {
             bigTicketSpender = true;
         }
         super.forEach(transaction);

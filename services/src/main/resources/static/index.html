@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Leads Database</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+        <script src="scripts/app.js"></script>
+        <style>
+            td, th {
+                border: 4px;
+                text-align: left;
+                padding: 20px;
+            }
+            table.response {
+                border-spacing: 10px 10px;
+            }
+        </style>
+        <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    </head>
+    <body>
+        <div ng-controller="LeadsCtrl">
+            <p><h1 align="CENTER">Leads Database</h1></p>
+            <p>
+                <div align="center">
+                    <table>
+                    <tr><td>Customer: </td><td><input type="text" id="customerId" ng-model="leads.customerId"/></td></tr>
+                    <tr><td>Month: </td><td><select id="month" ng-model="leads.month" ng-options="x for x in months" /></td></tr>
+                    <tr><td>Year: </td><td><select id="year" ng-model="leads.year" ng-options="x for x in years" /></td></tr>
+                    </table>
+                    <a ng-click="getLeads(leads.customerId, leads.month, leads.year)">Get Leads</a>
+                    <p style="color: green">{{message}}</p>
+                    <p style="color: red">{{errorMessage}}</p>
+                    <br /> <br />
+                    <div align="center">
+                        <h3>Response</h3>
+                        <table>
+                            <tr>
+                                <table>
+                                    <tr>
+                                        <td style="bold"><b>Balance</b> $</td>
+                                        <td>
+                                             {{leads.response.balance}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </tr>
+                            <tr>
+                                <table>
+                                    <tr>
+                                        <td><b>Classification</b></td>
+                                        <td>
+                                            <p ng-repeat="classification in leads.response.classifications">{{classification}}</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </tr>
+                            <tr>
+                                <table class="response" cellpadding="10" cellspacing="5">
+                                    <tr>
+                                        <th>Customer Id</th>
+                                        <th>Date</th>
+                                        <th>Transaction Amount</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    <tr ng-repeat="lead in leads.response.transactionList">
+                                        <td>{{ lead.customerId }}</td>
+                                        <td>{{ lead.date }}</td>
+                                        <td>${{ lead.amount }}</td>
+                                        <td>{{ lead.description }}</td>
+                                    </tr>
+                                </table>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </p>
+        </div>
+    </body>
+</html>

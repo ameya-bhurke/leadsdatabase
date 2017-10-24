@@ -3,6 +3,7 @@ package service;
 import dataaccess.Config;
 import dataaccess.TransactionFacade;
 import datafeeds.CsvTranscationFactory;
+import model.ClassificationEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import util.CustomClassificationEnumSerializer;
 import util.CustomDateSerializer;
 
 import java.text.MessageFormat;
@@ -41,11 +43,12 @@ public class Application implements CommandLineRunner {
     }
 
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer addCustomBigDecimalDeserialization() {
+    public Jackson2ObjectMapperBuilderCustomizer addCustomDateDeserialization() {
         return new Jackson2ObjectMapperBuilderCustomizer() {
 
             public void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder) {
                 jacksonObjectMapperBuilder.serializerByType(Date.class, new CustomDateSerializer());
+                jacksonObjectMapperBuilder.serializerByType(ClassificationEnum.class, new CustomClassificationEnumSerializer());
             }
 
         };

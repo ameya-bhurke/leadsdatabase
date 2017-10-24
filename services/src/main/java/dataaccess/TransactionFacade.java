@@ -15,6 +15,8 @@ import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -93,7 +95,9 @@ public class TransactionFacade {
         final double balance = jdbcTemplate.query("SELECT SUM(amount) FROM transactions WHERE customer_id=?", new Object[] {customerId},
                 balanceResultSetExctractor);
         LOGGER.info(MessageFormat.format("Balance for customer: {0} is {1}", customerId, balance));
-        return balance;
+        BigDecimal bigDecimal = new BigDecimal(balance);
+        bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+        return bigDecimal.doubleValue();
     }
 
     public List<ClassificationEnum> classifyCustomerTransactions(List<Transaction> transactionList) {

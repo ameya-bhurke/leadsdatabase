@@ -27,7 +27,9 @@ public class PotentialSaverTransactionAccumulator extends TransactionAccumulator
     @Override
     public void accumulate(Map<ClassificationEnum, Boolean> classificationMap) {
         if(((expense * 100) / deposit) < 25) {
-            classificationMap.put(ClassificationEnum.BIG_SPENDER, true);
+            classificationMap.put(ClassificationEnum.POTENTIAL_SAVER, true);
+        } else {
+            classificationMap.put(ClassificationEnum.POTENTIAL_SAVER, false);
         }
         super.accumulate(classificationMap);
     }

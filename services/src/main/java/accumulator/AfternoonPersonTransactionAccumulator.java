@@ -30,6 +30,8 @@ public class AfternoonPersonTransactionAccumulator extends TransactionAccumulato
     public void accumulate(Map<ClassificationEnum, Boolean> classificationMap) {
         if(((afternoonTransactionCount * 100) / totalCount) > 50) {
             classificationMap.put(ClassificationEnum.AFTERNOON_PERSON, true);
+        } else {
+            classificationMap.put(ClassificationEnum.AFTERNOON_PERSON, false);
         }
         super.accumulate(classificationMap);
     }

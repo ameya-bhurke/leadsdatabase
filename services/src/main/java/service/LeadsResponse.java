@@ -5,13 +5,13 @@ import model.Transaction;
 
 import java.util.List;
 
-public class TransactionResponse {
+public class LeadsResponse {
 
     private double balance;
     private List<ClassificationEnum> classifications;
     private List<Transaction> transactionList;
 
-    public TransactionResponse() {
+    public LeadsResponse() {
     }
 
     public double getBalance() {
