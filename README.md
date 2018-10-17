@@ -35,6 +35,12 @@ Please build the project using
 mvn clean package
 ```
 
+## Data
+The data file is available here - 
+```
+./feedprocessor/src/main/resources/data.txt
+
+
 ## Running the application
 Assuming you're still in the root directory of the project, please run the following command -
 
@@ -46,3 +52,5 @@ java -jar services\target\services-1.0-SNAPSHOT.jar
 Goto the following URL after successfully running the application - 
 
 http://localhost:8080/index.html
+
+Please feel free to test for customer ids - 3, 5, 23, 11, 19, 4.
