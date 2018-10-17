@@ -17,12 +17,14 @@ They have decided to classify customers based on the following rules:
 
 * Periods are delimited by the first day of each month (e.g. July 2016 is defined as 1st July 2016 to 31st
 July 2016 inclusive)
-* If a person is identified as both a Big Spender and a Fast Spender then they should be classified as a
-Potential Loan customer instead.
+* If a person is identified as both a _Big Spender_ and a _Fast Spender_ then they should be classified as a
+_Potential Loan customer_ instead.
+
+
 The marketing department wants a user interface where they can enter the month (e.g. July 2016) and
 CustomerId and be presented with:
-* The Classification
-* The list of transactions processed, with the Current Balance as of today
+* The _Classification_
+* The list of transactions processed, with the _Current Balance_ as of today
 
 ## Building the project
 After you've checked out the project, please change to the directory root where it is checked out on your command prompt or shell.
