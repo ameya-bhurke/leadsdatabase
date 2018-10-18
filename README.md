@@ -46,7 +46,7 @@ The data file is available here -
 Assuming you're still in the root directory of the project, please run the following command -
 
 ```
-java -jar services\target\services-1.0-SNAPSHOT.jar
+java -jar services/target/services-1.0-SNAPSHOT.jar
 ```
 
 ## Accessing the application
