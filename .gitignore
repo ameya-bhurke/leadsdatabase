@@ -1,4 +1,6 @@
 .idea/*
+.project
+.settings/
 leadsdatabase.iml
 feedprocessor/feedprocessor.iml
 services/services.iml
