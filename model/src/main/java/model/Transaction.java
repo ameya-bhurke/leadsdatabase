@@ -16,6 +16,13 @@ public final class Transaction {
 
     }
 
+    public Transaction( final String customerId, final Date date, final double amount, final String description ) {
+        this.Amount = amount;
+        this.CustomerId = customerId;
+        this.Date = date;
+        this.Description = description;
+    }
+
     public String getCustomerId() {
         return CustomerId;
     }
