@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * A simple facade for loading and reading @{@link model.Transaction}s.
@@ -58,7 +59,7 @@ public class TransactionFacade {
 
     }
 
-    public void initializeTransactionDatabase() {
+    public  void initializeTransactionDatabase() {
         LOGGER.info("Creating transactions table");
         jdbcTemplate.execute("DROP TABLE transactions IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE transactions(" +
@@ -103,17 +104,15 @@ public class TransactionFacade {
     public List<ClassificationEnum> classifyCustomerTransactions(List<Transaction> transactionList) {
         final TransactionAccumulator transactionAccumulator =
                 TransactionAccumulatorPipelineFactory.buildTransactionAccumulatorPipeline();
-        final List<ClassificationEnum> classifications = new ArrayList<ClassificationEnum>();
         Map<ClassificationEnum, Boolean> classificationMap = new HashMap<ClassificationEnum, Boolean>();
         for (final Transaction transaction : transactionList) {
             transactionAccumulator.forEach(transaction);
         }
         transactionAccumulator.accumulate(classificationMap);
-        for (Map.Entry<ClassificationEnum, Boolean> classificationEntry: classificationMap.entrySet()){
-            if(classificationEntry.getValue()) {
-                classifications.add(classificationEntry.getKey());
-            }
-        }
+        final List<ClassificationEnum> classifications = classificationMap.entrySet().parallelStream()
+            .filter(c -> c.getValue())
+            .map(c -> c.getKey())
+            .collect(Collectors.toList());
         return classifications;
     }
 
